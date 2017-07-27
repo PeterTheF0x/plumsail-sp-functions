@@ -20,9 +20,10 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
 
     string userName = System.Environment.GetEnvironmentVariable("SharePointUser", EnvironmentVariableTarget.Process);
     string password = System.Environment.GetEnvironmentVariable("SharePointPassword", EnvironmentVariableTarget.Process);
+    string domain = System.Environment.GetEnvironmentVariable("SharePointDomain", EnvironmentVariableTarget.Process);
 
     var authenticationManager = new PnPAuthenticationManager();
-    var clientContext = authenticationManager.GetSharePointOnlineAuthenticatedContextTenant(sharePointSiteUrl, userName, password);
+    var clientContext = authenticationManager.GetNetworkCredentialAuthenticatedContext(sharePointSiteUrl, userName, password, domain);
     var pnpClientContext = PnPClientContext.ConvertFrom(clientContext);
 
     string newFolderUrl = UrlUtility.Combine(baseFolderServerRelativeUrl, newFolderName);
